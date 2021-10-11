@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: @project.artifactId@
+data:
+  application.properties: |-
+    #Configuracion del Microservicio
+    server.port=8080
+    feign.hystrix.enabled=true
+
+    #Configuracion de Actuator
+    management.server.port=8181
+    management.endpoints.web.exposure.include=*
+    management.metrics.enable.jvm=true
+    management.metrics.distribution.percentiles-histogram.http.server.requests=true
+    management.metrics.distribution.sla.http.server.requests=1ms,5ms
+    management.endpoint.shutdown.enabled=true
+    management.endpoint.metrics.enabled=true
+    management.endpoint.health.show-details=always
+    management.environment.system.properties=false
+    management.endpoint.prometheus.enabled=true
+    management.metrics.export.prometheus.enabled=true
+    management.health.db.enabled=false
+
+    info.app.name = @project.name@
+    info.app.groupId = @project.groupId@
+    info.app.artifactId = @project.artifactId@
+    info.app.version = @project.version@
+
+    #Paramteros de bitacoreo
+    logging.pattern.level='[%X{data}%thread] [%X{X-B3-TraceId:-}] - %5p'
+    logging.pattern.console=%p, %d{'yyyy-MM-dd HH:mm:ss,SSS',America/Mexico_City}, %C{1}:%M:%L, %X{mdc.uuid}, %m%n
+    logging.level.org.springframework.web=OFF
+    logging.level.org.springframework.web.servlet.DispatcherServlet=OFF
+    logging.level.org.springframework.cloud.sleuth=OFF
+    logging.level.org.springframework.jdbc=OFF
+    spring.jpa.show-sql=false
+    spring.jpa.properties.hibernate.format_sql=false
+
+    #Configuracion del Circuit Breaker
+    hystrix.threadpool.default.allowMaximumSizeToDivergeFromCoreSize=true
+    hystrix.threadpool.default.coreSize=100
+    hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=18000
+    hystrix.threadpool.default.maxQueueSize=120
+    hystrix.threadpool.default.maximumSize=100
+
+    #Configuracion de hikari
+    spring.datasource.type=com.zaxxer.hikari.HikariDataSource
+    spring.datasource.hikari.connection-timeout=13000
+    spring.datasource.hikari.minimum-idle=3
+    spring.datasource.hikari.maximum-pool-size=8
+    spring.datasource.hikari.idle-timeout=3600000
+    spring.datasource.hikari.max-lifetime=1800000
+
+    #Contexto de la aplicacion
+ 
+    #Configuracion swagger ui
+    constants.swagger.basePackage:com.ejemplo.demo
+    constants.swagger.title: DEMO
+    constants.swagger.descriptionApi: Ejemplo de despliegue
+    constants.swagger.version: @project.version@
+    constants.swagger.nameDeveloper: Ambro
+    constants.swagger.contactUrl:
+    constants.swagger.label: swagger-ui.html
+    constants.swagger.resourceLocation: classpath:/META-INF/resources/
+    constants.swagger.webjars: /webjars/**
+    constants.swagger.webjarsLocation: classpath:/META-INF/resources/webjars/
+
+    #Configuracion de errores
+
+    #Headers necesarios
+
+    ##############################
+    # Configuracion por ambiente #
+    ##############################    
+
+    #Configuracion de persistencia (informix)
+
+    #Configuracion de Mongo
+
+    #Configuracion de Redis
+
+    #Configuracion URLs Feign, RestTemplate
